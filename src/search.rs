@@ -13,7 +13,6 @@ impl Search {
     fn get_walkdir(settings: &Settings) -> WalkDir {
         WalkDir::new(&settings.path)
             .same_file_system(settings.system_dir)
-            .max_open(usize::MAX)
     }
     fn search(settings: &Settings) {
         let walkdir = Search::get_walkdir(settings);
