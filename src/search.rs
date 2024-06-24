@@ -20,15 +20,38 @@ impl Search {
             match dir {
                 Ok(dir_entry) => match settings.type_search {
                     TypeSearch::Absolute => {
-                        let mut file_name = dir_entry.file_name().to_str().unwrap().to_string();
-                        check_case_symbol(settings, &mut file_name);
-                        if file_name == settings.file.to_lowercase() {
-                            println!("{:?} {:?}", file_name, dir_entry.path());
+                        let file_name = dir_entry.file_name().to_str().unwrap().to_string();
+                        match settings.ignore_case {
+                            true => {
+                                if file_name.to_lowercase() == settings.file.to_lowercase() {
+                                    println!("{:?} {:?}", file_name, dir_entry.path());
+                                }
+                            }
+                            false => {
+                                if file_name == settings.file {
+                                    println!("{:?} {:?}", file_name, dir_entry.path());
+                                }
+                            }
                         }
                     }
                     TypeSearch::Relative => {
                         let mut file_name = dir_entry.file_name().to_str().unwrap().to_string();
                         check_case_symbol(settings, &mut file_name);
+                        match settings.ignore_case {
+                            true => {
+                                if file_name.contains(&settings.file.to_lowercase()) {
+                                    println!("{:?} {:?}", file_name, dir_entry.path());
+                                }
+                            }
+                            false => {
+                                if file_name.contains(&settings.file) {
+                                    println!("{:?} {:?}", file_name, dir_entry.path());
+                                }
+                            }
+                        }
+                        if settings.ignore_case && file_name.contains(&settings.file) {
+                            println!("{:?} {:?}", file_name, dir_entry.path());
+                        }
                         if file_name.contains(&settings.file) {
                             println!("{:?} {:?}", file_name, dir_entry.path());
                         }
