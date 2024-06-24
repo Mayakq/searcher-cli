@@ -2,10 +2,16 @@ on:
   release:
     types: [created]
 
+
 jobs:
+
   release:
     name: release ${{ matrix.target }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     strategy:
       fail-fast: false
       matrix:
